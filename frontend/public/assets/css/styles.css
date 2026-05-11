@@ -1,0 +1,95 @@
+
+
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background: #283618;
+  color: #fefae0;
+}
+.site-header {
+  background: #dda15e;
+  color: #283618;
+  text-align: center;
+  padding: 0.5rem 1rem;
+}
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.5rem auto 2rem;
+  width: 100%;
+}
+
+.card {
+  background: #dda15e;
+  color: #283618;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  min-height: 8rem;
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.card p {
+  font-size: 0.875rem;
+}
+
+.main-section {
+  background: #dda15e;
+  color: #283618;
+  max-width: 54rem;
+  margin: 2rem auto 0;
+  padding: 2rem 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.main-section__desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 38rem;
+  margin: 0 auto 1.5rem;
+}
+
+.main-section__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+
+
+.main-section__cta {
+  display: inline-block;
+  background: #283618;
+  color: #fefae0;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.site-footer {
+  margin-top: 2rem;
+  background: #dda15e;
+  color: #283618;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+}

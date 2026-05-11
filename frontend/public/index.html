@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VilleNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>VilleNova</h1>
+  </header>
+
+  <main class="page">
+
+    <section class="top-bar" aria-label="Barre de recherche">
+      <input type="text" placeholder="Rechercher un événement..." id="search-input" />
+      <button type="button" id="search-btn">Go</button>
+    </section>
+
+    <section class="cards" id="featured-cards" aria-label="Événements à la une">
+      <p class="loading">Chargement des événements...</p>
+    </section>
+
+    <section class="main-section">
+      <h2 class="main-section__title">Découvrez VilleNova</h2>
+      <p class="main-section__desc">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris. Découvrez les événements culturels, musicaux et
+        artistiques de votre région — concerts, expositions, spectacles et bien plus encore.
+      </p>
+
+      <ul class="events-list" id="events-list" aria-label="Liste des événements">
+        <li class="loading">Chargement...</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 VilleNova</p>
+  </footer>
+
+</body>
+</html>
