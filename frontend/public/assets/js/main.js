@@ -4,6 +4,9 @@ const API_KEY   = 'aab02dc8ee044e5da4b8adda877392b1';
 const AGENDA_ID = '30166879';
 const API_URL   = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events`;
 
+// Наш бекенд (для подій, створених на сайті). API_BASE приходить з auth.js, якщо є.
+const EVENTS_API = (typeof API_BASE !== 'undefined') ? API_BASE : 'http://127.0.0.1:8000/api';
+
 
 function getTitle(event) {
   if (event.title.fr) return event.title.fr;
@@ -107,6 +110,25 @@ function createEventRowHTML(event, index) {
   `;
 }
 
+// Рядок списку для події, створеної на сайті (наш API). Клік -> event.html?local=<id>
+function createLocalEventRowHTML(event, index) {
+  const number = String(index + 1).padStart(2, '0');
+  const date   = event.date_range || '';
+  const title  = event.title || 'Sans titre';
+  const city   = event.location_city || '';
+
+  return `
+    <li class="event-item">
+      <a href="pages/event.html?local=${event.id}">
+        <span class="event-item__num">${number}</span>
+        <span class="event-item__date">${date}</span>
+        <span class="event-item__title">${title}</span>
+        <span class="event-item__location">${city}</span>
+      </a>
+    </li>
+  `;
+}
+
 function goToEvent(eventId) {
   window.location.href = `pages/event.html?id=${eventId}`;
 }
@@ -150,7 +172,24 @@ async function loadEvents() {
 
     const listContainer = document.getElementById('events-list');
     if (listContainer) {
-      listContainer.innerHTML = events.map(createEventRowHTML).join('');
+      // Наші події (створені на сайті) — зверху, потім події OpenAgenda.
+      let localEvents = [];
+      try {
+        const localRes = await fetch(`${EVENTS_API}/events/`);
+        localEvents = await localRes.json();
+        localEvents.reverse(); // найновіші зверху
+      } catch (e) {
+        console.error('Erreur chargement événements VilleNova :', e);
+      }
+
+      const localHTML = localEvents
+        .map((ev, i) => createLocalEventRowHTML(ev, i))
+        .join('');
+      const openAgendaHTML = events
+        .map((ev, i) => createEventRowHTML(ev, localEvents.length + i))
+        .join('');
+
+      listContainer.innerHTML = localHTML + openAgendaHTML;
     }
 
   } catch (error) {

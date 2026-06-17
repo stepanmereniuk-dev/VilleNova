@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer un événement – VilleNova</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .form-wrap {
+      max-width: 480px;
+      margin: 40px auto;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .form-wrap h1 { font-size: 22px; margin-bottom: 16px; }
+    .event-form { display: flex; flex-direction: column; gap: 10px; }
+    .event-form input,
+    .event-form textarea {
+      padding: 10px; border: 1px solid #ccc; border-radius: 4px;
+      font: inherit; width: 100%; box-sizing: border-box;
+    }
+    .event-form textarea { min-height: 90px; resize: vertical; }
+    .event-form button {
+      padding: 10px; cursor: pointer;
+      background: #222; color: #fff; border: none; border-radius: 4px;
+    }
+    .form-msg { margin-top: 12px; min-height: 20px; font-size: 14px; }
+    .form-msg.error { color: #c0392b; }
+    .form-msg.ok { color: #27ae60; }
+  </style>
+</head>
+<body>
+
+  <nav class="auth-nav">
+    <a href="../index.html" class="logo">VilleNova</a>
+    <div id="nav-user"></div>
+  </nav>
+
+  <div class="form-wrap">
+    <h1>Créer un événement</h1>
+
+    <form id="event-form" class="event-form">
+      <input type="text" id="ev-title" placeholder="Titre *" required />
+      <textarea id="ev-description" placeholder="Description"></textarea>
+      <input type="text" id="ev-date" placeholder="Dates (ex. 12–14 juin 2026)" />
+      <input type="text" id="ev-location-name" placeholder="Nom du lieu" />
+      <input type="text" id="ev-city" placeholder="Ville" />
+      <input type="url" id="ev-image" placeholder="URL de l'image" />
+      <input type="url" id="ev-registration" placeholder="URL d'inscription" />
+      <button type="submit">Publier l'événement</button>
+    </form>
+
+    <p id="form-msg" class="form-msg"></p>
+  </div>
+
+  <script>window.SITE_ROOT = '..';</script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    const form = document.getElementById('event-form');
+    const msg = document.getElementById('form-msg');
+
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.className = 'form-msg ' + (type || '');
+    }
+
+    // Тільки для залогінених — інакше на сторінку логіну.
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      window.location.href = 'login-registration-page.html';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showMsg('Publication...', '');
+
+      const payload = { user_id: currentUser.id, title: document.getElementById('ev-title').value };
+
+      // Додаємо лише заповнені необов'язкові поля.
+      const optional = {
+        description: 'ev-description',
+        date_range: 'ev-date',
+        location_name: 'ev-location-name',
+        location_city: 'ev-city',
+        image_url: 'ev-image',
+        registration_url: 'ev-registration',
+      };
+      for (const [field, id] of Object.entries(optional)) {
+        const value = document.getElementById(id).value.trim();
+        if (value) payload[field] = value;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/events/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          showMsg('Événement créé ! Redirection...', 'ok');
+          setTimeout(() => (window.location.href = '../index.html'), 700);
+        } else if (res.status === 404) {
+          // Le compte n'existe plus en base : session expirée.
+          localStorage.removeItem('user');
+          showMsg('Session expirée. Redirection vers la connexion...', 'error');
+          setTimeout(() => (window.location.href = 'login-registration-page.html'), 900);
+        } else {
+          showMsg('Impossible de créer l\'événement.', 'error');
+        }
+      } catch (err) {
+        showMsg('Erreur de connexion au serveur.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

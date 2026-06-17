@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion / Inscription – VilleNova</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .auth-wrap {
+      max-width: 360px;
+      margin: 40px auto;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .auth-tabs { display: flex; margin-bottom: 16px; }
+    .auth-tabs button {
+      flex: 1; padding: 10px; cursor: pointer;
+      border: 1px solid #ccc; background: #f5f5f5;
+    }
+    .auth-tabs button.active { background: #222; color: #fff; }
+    .auth-form { display: flex; flex-direction: column; gap: 10px; }
+    .auth-form.hidden { display: none; }
+    .auth-form input {
+      padding: 10px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .auth-form button {
+      padding: 10px; cursor: pointer;
+      background: #222; color: #fff; border: none; border-radius: 4px;
+    }
+    .auth-msg { margin-top: 12px; min-height: 20px; font-size: 14px; }
+    .auth-msg.error { color: #c0392b; }
+    .auth-msg.ok { color: #27ae60; }
+  </style>
+</head>
+<body>
+
+  <nav class="auth-nav">
+    <a href="../index.html" class="logo">VilleNova</a>
+    <div id="nav-user"></div>
+  </nav>
+
+  <div class="auth-wrap">
+    <div class="auth-tabs">
+      <button id="tab-login" class="active" type="button">Connexion</button>
+      <button id="tab-register" type="button">Inscription</button>
+    </div>
+
+    <!-- CONNEXION -->
+    <form id="login-form" class="auth-form">
+      <input type="email" id="login-email" placeholder="E-mail" required />
+      <input type="password" id="login-password" placeholder="Mot de passe" required />
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <!-- INSCRIPTION -->
+    <form id="register-form" class="auth-form hidden">
+      <input type="text" id="reg-first" placeholder="Prénom" required />
+      <input type="text" id="reg-last" placeholder="Nom" required />
+      <input type="email" id="reg-email" placeholder="E-mail" required />
+      <input type="password" id="reg-password" placeholder="Mot de passe" required />
+      <button type="submit">Créer un compte</button>
+    </form>
+
+    <p id="auth-msg" class="auth-msg"></p>
+  </div>
+
+  <script>window.SITE_ROOT = '..';</script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const msg = document.getElementById('auth-msg');
+
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.className = 'auth-msg ' + (type || '');
+    }
+
+    // Changement d'onglet
+    tabLogin.addEventListener('click', () => {
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      showMsg('', '');
+    });
+    tabRegister.addEventListener('click', () => {
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      registerForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      showMsg('', '');
+    });
+
+    // Connexion
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showMsg('Vérification...', '');
+      try {
+        const data = await loginUser(
+          document.getElementById('login-email').value,
+          document.getElementById('login-password').value
+        );
+        if (data.success) {
+          setCurrentUser(data.user);
+          showMsg('Connecté ! Redirection...', 'ok');
+          setTimeout(() => (window.location.href = '../index.html'), 600);
+        } else {
+          showMsg('E-mail ou mot de passe incorrect.', 'error');
+        }
+      } catch (err) {
+        showMsg('Erreur de connexion au serveur.', 'error');
+      }
+    });
+
+    // Inscription
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showMsg('Création du compte...', '');
+      try {
+        const res = await registerUser({
+          first_name: document.getElementById('reg-first').value,
+          last_name: document.getElementById('reg-last').value,
+          email: document.getElementById('reg-email').value,
+          password: document.getElementById('reg-password').value,
+        });
+        if (res.ok) {
+          const user = await res.json();
+          setCurrentUser(user); // connecté immédiatement
+          showMsg('Compte créé ! Redirection...', 'ok');
+          setTimeout(() => (window.location.href = '../index.html'), 600);
+        } else {
+          showMsg('Impossible de créer le compte (e-mail peut-être déjà utilisé).', 'error');
+        }
+      } catch (err) {
+        showMsg('Erreur de connexion au serveur.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 
 const API_KEY   = 'aab02dc8ee044e5da4b8adda877392b1';
 const AGENDA_ID = '30166879';
+const LOCAL_API = 'http://127.0.0.1:8000/api';
 
 
 function getTitle(event) {
@@ -34,11 +35,85 @@ function formatTime(isoDate) {
   }).format(date);
 }
 
+// Подія, створена на сайті (наш API).
+async function loadLocalEvent(localId) {
+  const container = document.getElementById('event-detail');
+
+  try {
+    const response = await fetch(`${LOCAL_API}/events/${localId}`);
+    if (!response.ok) throw new Error('not found');
+    const ev = await response.json();
+
+    document.title = (ev.title || 'Événement') + ' — VilleNova';
+
+    const imageHTML = ev.image_url
+      ? `<img src="${ev.image_url}" alt="${ev.title}" class="event-detail__img" loading="eager">`
+      : '';
+
+    const tags = Array.isArray(ev.tags) ? ev.tags : [];
+    const tagsHTML = tags.length > 0
+      ? `<div class="event-detail__tags">
+           ${tags.map(function(tag) { return `<span class="card__tag">${tag}</span>`; }).join('')}
+         </div>`
+      : '';
+
+    const hasLocation = ev.location_name || ev.location_address || ev.location_city;
+    const locationHTML = hasLocation
+      ? `<address class="event-detail__location">
+           <strong>${ev.location_name || ''}</strong><br>
+           ${ev.location_address || ''}<br>
+           ${ev.location_postal_code || ''} ${ev.location_city || ''}
+         </address>`
+      : '';
+
+    const registerHTML = ev.registration_url
+      ? `<a href="${ev.registration_url}" class="btn-primary" target="_blank" rel="noopener noreferrer">S'inscrire</a>`
+      : '';
+
+    container.innerHTML = `
+      ${imageHTML}
+
+      <div class="event-detail__content">
+
+        ${tagsHTML}
+
+        <h2 class="event-detail__title">${ev.title || ''}</h2>
+
+        ${ev.date_range ? `<p class="event-detail__daterange">${ev.date_range}</p>` : ''}
+
+        ${ev.description ? `<p class="event-detail__desc">${ev.description}</p>` : ''}
+        ${ev.long_description ? `<div class="event-detail__long">${ev.long_description}</div>` : ''}
+
+        <div class="event-detail__meta">
+          ${locationHTML}
+          ${ev.conditions ? `<p class="event-detail__price">${ev.conditions}</p>` : ''}
+        </div>
+
+        ${registerHTML}
+
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Erreur lors du chargement de l\'événement VilleNova :', error);
+    container.innerHTML = `
+      <p>Impossible de charger cet événement.</p>
+      <a href="../index.html">← Retour à l'accueil</a>
+    `;
+  }
+}
+
 async function loadEvent() {
   const container = document.getElementById('event-detail');
 
   const urlParams  = new URLSearchParams(window.location.search);
+  const localId    = urlParams.get('local');
   const eventId    = urlParams.get('id');
+
+  // Подія, створена на сайті
+  if (localId) {
+    return loadLocalEvent(localId);
+  }
 
   if (!eventId) {
     container.innerHTML = '<p>Aucun événement sélectionné.</p>';
