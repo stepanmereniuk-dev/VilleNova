@@ -9,12 +9,22 @@ function getTitle(event) {
   if (event.title.en) return event.title.en;
   return 'Sans titre';
 }
+
+
+
+
+
 function getImageUrl(event) {
   if (!event.image || !event.image.variants || event.image.variants.length === 0) {
     return null;
   }
   return event.image.base + event.image.variants[0].filename;
 }
+
+
+
+
+
 function formatFullDate(isoDate) {
   const date = new Date(isoDate);
   return new Intl.DateTimeFormat('fr-FR', {
@@ -35,7 +45,12 @@ function formatTime(isoDate) {
   }).format(date);
 }
 
-// Подія, створена на сайті (наш API).
+
+
+
+
+
+
 async function loadLocalEvent(localId) {
   const container = document.getElementById('event-detail');
 

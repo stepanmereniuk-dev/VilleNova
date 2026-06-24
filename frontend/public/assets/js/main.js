@@ -3,8 +3,6 @@
 const API_KEY   = 'aab02dc8ee044e5da4b8adda877392b1';
 const AGENDA_ID = '30166879';
 const API_URL   = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events`;
-
-// Наш бекенд (для подій, створених на сайті). API_BASE приходить з auth.js, якщо є.
 const EVENTS_API = (typeof API_BASE !== 'undefined') ? API_BASE : 'http://127.0.0.1:8000/api';
 
 
