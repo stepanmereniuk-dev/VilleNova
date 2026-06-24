@@ -1,4 +1,6 @@
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://127.0.0.1:8000/api'
+  : 'https://villenova.onrender.com/api';
 const ROOT = window.SITE_ROOT || '.';
 
 
