@@ -1,0 +1,88 @@
+@use 'abstracts' as *;
+
+// HEADER
+.site-header {
+  @extend %sand-surface;
+  text-align: center;
+  padding: $sp-md $sp-xl;
+  box-shadow: 0 2px 12px rgba($c-dark, 0.4);
+
+  h1 {
+    font-size: $fs-lg;
+    letter-spacing: 0.06em;
+    @include respond(md) { font-size: $fs-xl; }
+  }
+}
+
+// NAVBAR / AUTH
+.site-header--nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  gap: $sp-md;
+}
+
+.auth-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $sp-md;
+  padding: $sp-md $sp-xl;
+  background: $c-sand;
+  color: $c-forest;
+  box-shadow: 0 2px 12px rgba($c-dark, 0.4);
+
+  .logo {
+    text-decoration: none;
+    color: $c-forest;
+    font-weight: 700;
+  }
+}
+
+#nav-user {
+  display: flex;
+  align-items: center;
+  gap: $sp-sm;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: $c-forest;
+  color: $c-cream;
+  border: none;
+  border-radius: $r-md;
+  padding: 0.55rem 1.1rem;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 0.15s ease, transform 0.1s ease;
+
+  &:hover        { filter: brightness(1.25); color: $c-cream; }
+  &:active       { transform: scale(0.97); }
+  &:focus-visible { outline: 2px solid $c-forest; outline-offset: 3px; }
+}
+
+// PAGE WRAPPER
+.page {
+  max-width: $max-w;
+  margin: 0 auto;
+  padding: $sp-xl $sp-md;
+  @include respond(md) { padding: $sp-2xl $sp-xl; }
+}
+
+// FOOTER
+.site-footer {
+  @extend %sand-surface;
+  margin-top: $sp-2xl;
+  text-align: center;
+  padding: $sp-lg $sp-xl;
+  font-size: $fs-sm;
+  font-family: $font-body;
+  box-shadow: 0 -2px 12px rgba($c-dark, 0.3);
+}

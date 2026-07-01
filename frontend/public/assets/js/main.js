@@ -3,8 +3,6 @@
 const API_KEY   = 'aab02dc8ee044e5da4b8adda877392b1';
 const AGENDA_ID = '30166879';
 const API_URL   = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events`;
-
-// Наш бекенд (для подій, створених на сайті). API_BASE приходить з auth.js, якщо є.
 const EVENTS_API = (typeof API_BASE !== 'undefined') ? API_BASE : 'http://127.0.0.1:8000/api';
 
 
@@ -13,21 +11,27 @@ function getTitle(event) {
   if (event.title.en) return event.title.en;
   return 'Sans titre';
 }
+
 function getPrice(event) {
   if (event.conditions && event.conditions.fr) return event.conditions.fr;
   return '';
 }
+
 // function getImageUrl(event) {
 //   if (!event.image || !event.image.variants || event.image.variants.length === 0) {
 //     return null;
 //   }
 //lieu et la ville
+
+
 function getVenue(event) {
   const name = event.location ? event.location.name : '';
   const city = event.location ? event.location.city : '';
   // On filtre les valeurs vides et on les joint avec une virgule
   return [name, city].filter(Boolean).join(', ');
 }
+
+
 function getImageUrl(event) {
   if (!event.image || !event.image.variants || event.image.variants.length === 0) {
     return null;
@@ -38,6 +42,8 @@ function getImageUrl(event) {
   const chosenVariant = thumbnail || event.image.variants[0];
   return event.image.base + chosenVariant.filename;
 }
+
+
 function formatDate(isoDate) {
   const date = new Date(isoDate);
   return new Intl.DateTimeFormat('fr-FR', {
@@ -74,6 +80,7 @@ function createCardHTML(event) {
 
   // On construit le HTML complet de la carte
   // data-id stocke l'identifiant de l'événement pour savoir sur lequel on a cliqué
+  
   return `
     <article class="card" data-id="${event.uid}" tabindex="0" role="button" aria-label="Voir ${eventTitle}">
       ${imageHTML}
@@ -110,7 +117,6 @@ function createEventRowHTML(event, index) {
   `;
 }
 
-// Рядок списку для події, створеної на сайті (наш API). Клік -> event.html?local=<id>
 function createLocalEventRowHTML(event, index) {
   const number = String(index + 1).padStart(2, '0');
   const date   = event.date_range || '';
@@ -136,7 +142,7 @@ function goToEvent(eventId) {
 
 async function loadEvents() {
   try {
-    //20 événements en cours ou à venir
+    //20 en cours 
     const response = await fetch(
       `${API_URL}?size=20&relative[0]=current&relative[1]=upcoming&detailed=1&key=${API_KEY}`
     );
@@ -148,7 +154,7 @@ async function loadEvents() {
     const data   = await response.json();
     const events = data.events || [];
 
-    // 3 cartes
+    //3 cartes
     const cardsContainer = document.getElementById('featured-cards');
 
     if (cardsContainer) {
@@ -172,12 +178,11 @@ async function loadEvents() {
 
     const listContainer = document.getElementById('events-list');
     if (listContainer) {
-      // Наші події (створені на сайті) — зверху, потім події OpenAgenda.
       let localEvents = [];
       try {
         const localRes = await fetch(`${EVENTS_API}/events/`);
         localEvents = await localRes.json();
-        localEvents.reverse(); // найновіші зверху
+        localEvents.reverse(); //newest
       } catch (e) {
         console.error('Erreur chargement événements VilleNova :', e);
       }

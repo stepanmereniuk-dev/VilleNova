@@ -12,10 +12,7 @@ const ROOT = window.SITE_ROOT || '.';
 // 
 // 
 // 
-// 
-// 
-// 
-// 
+
 
 function getCurrentUser() {
   const raw = localStorage.getItem('user');
@@ -51,6 +48,8 @@ async function loginUser(email, password) {
   return res.json();
 }
 
+
+
 function renderNavUser() {
   const slot = document.getElementById('nav-user');
   if (!slot) return;
@@ -62,15 +61,23 @@ function renderNavUser() {
       `<button type="button" class="nav-btn" id="logout-btn">Déconnexion</button>` +
       `<button type="button" class="nav-btn nav-user__name" id="user-btn">👤 ${user.first_name} ${user.last_name}</button>`;
     const createBtn = document.getElementById('create-event-btn');
+
+
+
+
     if (createBtn) {
       createBtn.addEventListener('click', () => {
         window.location.href = `${ROOT}/pages/create-event.html`;
       });
     }
+
+
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', logout);
     }
+
+    
   } else {
     slot.innerHTML =
       `<button type="button" class="nav-btn" id="login-btn">Connexion</button>`;

@@ -1,0 +1,43 @@
+@use 'abstracts' as *;
+
+// FONTS
+@font-face {
+  font-family: 'Limelight';
+  src: url('../fonts/Limelight-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oi';
+  src: url('../fonts/Oi-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+// RESET + BASE
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 100%; scroll-behavior: smooth; }
+
+body {
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: $lh-base;
+  background: $c-forest;
+  color: $c-cream;
+  min-height: 100vh;
+}
+
+h1, h2, h3 { font-family: $font-display; line-height: 1.2; }
+
+a {
+  color: $c-sand;
+  text-decoration: underline;
+  &:hover { color: $c-cream; }
+  &:focus-visible { outline: 2px solid $c-sand; outline-offset: 2px; border-radius: 2px; }
+}
+
+img { display: block; max-width: 100%; }

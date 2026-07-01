@@ -1,3 +1,8 @@
+.card, .main-section, .site-header, .site-footer {
+  background: #dda15e;
+  color: #283618;
+}
+
 @font-face {
   font-family: "Limelight";
   src: url("../fonts/Limelight-Regular.ttf") format("truetype");
@@ -12,11 +17,6 @@
   font-style: normal;
   font-display: swap;
 }
-.site-footer, .main-section, .card, .site-header {
-  background: #dda15e;
-  color: #283618;
-}
-
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -75,6 +75,65 @@ img {
   }
 }
 
+.site-header--nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  gap: 1rem;
+}
+
+.auth-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: #dda15e;
+  color: #283618;
+  box-shadow: 0 2px 12px rgba(26, 36, 16, 0.4);
+}
+.auth-nav .logo {
+  text-decoration: none;
+  color: #283618;
+  font-weight: 700;
+}
+
+#nav-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #283618;
+  color: #fefae0;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.55rem 1.1rem;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+.nav-btn:hover {
+  filter: brightness(1.25);
+  color: #fefae0;
+}
+.nav-btn:active {
+  transform: scale(0.97);
+}
+.nav-btn:focus-visible {
+  outline: 2px solid #283618;
+  outline-offset: 3px;
+}
+
 .page {
   max-width: 68rem;
   margin: 0 auto;
@@ -84,6 +143,15 @@ img {
   .page {
     padding: 3rem 2rem;
   }
+}
+
+.site-footer {
+  margin-top: 3rem;
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  box-shadow: 0 -2px 12px rgba(26, 36, 16, 0.3);
 }
 
 .top-bar {
@@ -506,76 +574,4 @@ img {
   padding: 2rem;
 }
 
-.site-footer {
-  margin-top: 3rem;
-  text-align: center;
-  padding: 1.5rem 2rem;
-  font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
-  box-shadow: 0 -2px 12px rgba(26, 36, 16, 0.3);
-}
-
-/* ---------- Navbar / auth ---------- */
-
-/* Хедер з навігацією: логотип ліворуч, дії праворуч (з самого краю). */
-.site-header--nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: left;
-  gap: 1rem;
-}
-
-/* Верхня панель на сторінках логіну / створення події. */
-.auth-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  background: #dda15e;
-  color: #283618;
-  box-shadow: 0 2px 12px rgba(26, 36, 16, 0.4);
-}
-.auth-nav .logo {
-  text-decoration: none;
-  color: #283618;
-  font-weight: 700;
-}
-
-/* Контейнер кнопок користувача у барі. */
-#nav-user {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Кнопки в барі (Connexion / Déconnexion / ім'я / створити подію). */
-.nav-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: #283618;
-  color: #fefae0;
-  border: none;
-  border-radius: 0.75rem;
-  padding: 0.55rem 1.1rem;
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
-  font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  text-decoration: none;
-  transition: filter 0.15s ease, transform 0.1s ease;
-}
-.nav-btn:hover {
-  filter: brightness(1.25);
-  color: #fefae0;
-}
-.nav-btn:active {
-  transform: scale(0.97);
-}
-.nav-btn:focus-visible {
-  outline: 2px solid #283618;
-  outline-offset: 3px;
-}
+/*# sourceMappingURL=style.css.map */
